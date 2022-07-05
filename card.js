@@ -2,6 +2,7 @@ export default class Card {
   constructor(someProduct) {
     this.state = someProduct;
     this.myRender();
+    this.addEventListenerCloseBasket();
   }
 
   getTemplate() {
@@ -21,10 +22,10 @@ export default class Card {
             <div>${this.state.price}</div>
             </div>
             <div class="name-laptops">${this.state.title}</div>
-            <div class="class-computer">laptops</div>
+            <div class="class-computer">${this.state.category}</div>
           </div>
           <footer class="btn">
-            <button class="name-btn">add to card</button>
+            <button class="name-btn" data-element="btn-add-product">add to card</button>
           </footer>
         </div>
       </div>
@@ -45,5 +46,16 @@ export default class Card {
     wrapper.innerHTML = this.getTemplate();
 
     this.element = wrapper.firstElementChild;
+  }
+
+  addEventListenerCloseBasket() {
+    const searchElement = this.element.querySelector('[data-element="btn-add-product"]');
+
+    searchElement.addEventListener('click', event => {
+      const customEvent = new CustomEvent('add-product', {
+        detail: this.state
+      });
+      this.element.dispatchEvent(customEvent);
+    });
   }
 }

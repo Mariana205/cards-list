@@ -29,6 +29,14 @@ export default class CardsList {
     const cards = this.data.map(item => {
       const card = new Card(item);
 
+      card.element.addEventListener('add-product', event => {
+        const customEvent = new CustomEvent('add-product', {
+          detail: event.detail
+        });
+
+        this.element.dispatchEvent(customEvent);
+      });
+
       return card.element;
     });
 
@@ -36,11 +44,11 @@ export default class CardsList {
 
     body.innerHTML = '';
     body.append(...cards);
+  }
 
-    }
-    update(data = []) {
-      this.data = data;
+  update(data = []) {
+    this.data = data;
 
-      this.renderCards();
+    this.renderCards();
   }
 }
